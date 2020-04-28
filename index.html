@@ -43,19 +43,27 @@
   })()
   ctx.scale(10, 10);
   document.addEventListener("keydown", function (e) {
-    if (e.which == 38) { // down
+    if (e.which == 38 ) { // up
       direction = [0, -1]
-    } else if (e.which == 40) { //up
+    }  if (e.which == 40 ) { //down
       direction = [0, 1]
-    } else if (e.which == 39) { //right
+    }  if (e.which == 39 ) { //right
       direction = [1, 0]
-    } else if (e.which == 37) { // left
+    }  if (e.which == 37 ) { // left
       direction = [-1, 0]
     }
   })
 
   function generateFood() {
-    snakeFood = [Math.round(Math.random() * (40)), Math.round(Math.random() * (40))]
+    let newX = Math.round(Math.random() * (40))
+    let newY = Math.round(Math.random() * (40))
+
+    if(snake.find(([x,y])=> x == newX && y == newY)){
+      generateFood()
+    }else{
+      snakeFood = [newX, newY]
+    }
+
   }
 
   function defeat() {
