@@ -23,40 +23,37 @@
   var scoreLabelElement =document.getElementById('scoreSpan');
   var canvas = document.getElementById("playground");
   var ctx = canvas.getContext('2d');
-  var direction = [1, 0] // defaults right
+  var direction = {
+    coordinates:[1, 0],
+    orientation: "right"
+  } // defaults right
   var snakeFood = []
   var currentScore = 0;
   var snake = [
     [2, 0],
     [1, 0],
     [0, 0],
-  ]
-  var game = (function(el){
-    return {
-      set score(value){
-        el.textContent = value
-      },
-      get score(){
-        return el.textContent
-      }
-    };
-  })()
+  ];
   ctx.scale(10, 10);
   document.addEventListener("keydown", function (e) {
-    if (e.which == 38 ) { // up
-      direction = [0, -1]
-    }  if (e.which == 40 ) { //down
-      direction = [0, 1]
-    }  if (e.which == 39 ) { //right
-      direction = [1, 0]
-    }  if (e.which == 37 ) { // left
-      direction = [-1, 0]
+    if (e.which == 38  && direction.orientation != "down") { // up
+      direction.coordinates = [0, -1]
+      direction.orientation = 'up'
+    }  if (e.which == 40 && direction.orientation != "up") { //down
+      direction.coordinates = [0, 1]
+      direction.orientation = 'down'
+    }  if (e.which == 39  && direction.orientation != "left") { //right
+      direction.coordinates = [1, 0]
+      direction.orientation = 'right'
+    }  if (e.which == 37  && direction.orientation != "right") { // left
+      direction.coordinates = [-1, 0]
+      direction.orientation = 'left'
     }
   })
 
   function generateFood() {
-    let newX = Math.round(Math.random() * (40))
-    let newY = Math.round(Math.random() * (40))
+    let newX = Math.round(Math.random() * 39)
+    let newY = Math.round(Math.random() * 39)
 
     if(snake.find(([x,y])=> x == newX && y == newY)){
       generateFood()
@@ -93,8 +90,8 @@
   generateFood();
   print();
   var game = setInterval(() => {
-    const currentX = snake[0][0] + direction[0];
-    const currentY = snake[0][1] + direction[1];
+    const currentX = snake[0][0] + direction.coordinates[0];
+    const currentY = snake[0][1] + direction.coordinates[1];
     if(snake.find(([x,y])=> x == currentX && y == currentY)){
       return defeat();
     }
