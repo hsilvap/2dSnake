@@ -23,6 +23,8 @@
   var scoreLabelElement =document.getElementById('scoreSpan');
   var canvas = document.getElementById("playground");
   var ctx = canvas.getContext('2d');
+  var speed = 50;
+  var scoreSpeed = 3;
   var direction = {
     coordinates:[1, 0],
     orientation: "right"
@@ -103,13 +105,18 @@
 
     if (currentX == snakeFood[0] && currentY == snakeFood[1]) {
       generateFood()
-      currentScore++
-      scoreLabelElement.textContent = currentScore
+      currentScore++;
+      scoreLabelElement.textContent = currentScore;
+
+      if(currentScore % scoreSpeed == 0 && speed > 0){
+        speed -= Math.floor(currentScore / scoreSpeed)
+      }
     } else {
       snake.pop()
     }
+    console.log(speed)
     print();
-  }, 100);
+  }, speed);
 
 
 </script>
